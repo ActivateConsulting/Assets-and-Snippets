@@ -1,0 +1,20 @@
+Stroomdikte Norm:= 
+VAR NormType=
+	CALCULATE(
+		SWITCH(TRUE();
+		-- Hier staan de verschillende criteria en erachter staat welke waarde er moet worden geoutput als deze criteria zich voordoen. Dit kan ook een formule zijn. In dit geval gaat het om 1 filter toe te passen op basis van 2 geselecteerde waarden in een slicer.
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Ja"; SELECTEDVALUE(Inschrijving[Alpha Categorie])="Bedrijven");"Stroomdikte Norm Firma Spoed";
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Nee";SELECTEDVALUE(Inschrijving[Alpha Categorie])="Bedrijven");"Stroomdikte Norm Firma Regulier";
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Ja"; SELECTEDVALUE(Inschrijving[Alpha Categorie])="Keuringen");"Stroomdikte Norm Keuringen Spoed";
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Nee";SELECTEDVALUE(Inschrijving[Alpha Categorie])="Keuringen");"Stroomdikte Norm Keuringen Regulier";
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Ja"; SELECTEDVALUE(Inschrijving[Alpha Categorie])="ISTA");"Stroomdikte Norm ISTA Spoed";
+				AND(SELECTEDVALUE(Inschrijving[Spoed])="Nee";SELECTEDVALUE(Inschrijving[Alpha Categorie])="ISTA");"Stroomdikte Norm ISTA Regulier";
+				SELECTEDVALUE(Inschrijving[Spoed])="Ja";"Totaal norm Stroomdikte Spoed";
+				SELECTEDVALUE(Inschrijving[Spoed])="Nee";"Totaal norm Stroomdikte Regulier";
+				TRUE();"Norm Stroomdikte Totaal"
+		);
+		-- Deze crossfilter statement 
+		CROSSFILTER(Inschrijving[inschrijving_bk];'Timestamp - FT'[inschrijving_bk];None)
+	)
+RETURN
+CALCULATE(SUM('Stroomdikte norm'[Norm]);FILTER('Stroomdikte norm';'Stroomdikte norm'[Type]=NormType);FILTER(Datum;Datum[Datum]<=TODAY()))

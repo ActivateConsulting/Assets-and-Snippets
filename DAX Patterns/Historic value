@@ -1,0 +1,9 @@
+-- Dit patroon is voor het berekenen van een waarde <MEAUSRE> zoals die was in de history op basis van een validity date <VALIDFROM> en <VALIDTO>
+
+History Value:= 
+    CALCULATE(
+        <MEASURE VOOR HISTORY;
+        FILTER(  <FETITENTABEL> ;  <VALIDFROM>  <  MAX(  <DATUM IN HISTORY DIM>  ));
+        FILTER(  <FETITENTABEL> ;  <VALIDTO>  >=  MAX(  <DATUM IN HISTORY DIM>  ))        
+    )
+    

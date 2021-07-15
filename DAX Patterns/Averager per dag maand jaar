@@ -1,0 +1,19 @@
+-- Deze snippets zijn ervoor om een gemiddelde per eenheid te berekenen binnen de geselecteerde context.
+
+Avg. Sales per Day :=
+AVERAGEX(
+    VALUES( <DATUM> );
+    <MEASURE>
+)
+
+Avg. Sales per Month :=
+AVERAGEX(
+    VALUES( <JAARMAAND> );
+    <MEASURE>
+)
+
+Avg. Sales per Year :=
+AVERAGEX(
+    VALUES( <JAAR> );
+    <MEASURE>
+)
