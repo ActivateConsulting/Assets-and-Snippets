@@ -1,0 +1,99 @@
+// Deze calculation group is voor de berekening van tijd verloop zaken zoals Vorig jaar, ytd en running total.
+
+{
+    "name": "Tijd verloop",
+    "calculationGroup": {
+      "precedence": 10,
+      "calculationItems": [
+        {
+          "name": "MTD",
+          "expression": "CALCULATE(SELECTEDMEASURE(), DATESMTD(Datum[Datum]))",
+          "ordinal": 2
+        },
+        {
+          "name": "Huidige waarde",
+          "expression": "selectedmeasure()",
+          "ordinal": 1
+        },
+        {
+          "name": "YTD",
+          "expression": [
+            "CALCULATE(TOTALYTD(SELECTEDMEASURE(),Datum[Datum]),FILTER(Datum,Datum[Datum]<=TODAY()))",
+            ""
+          ],
+          "ordinal": 4
+        },
+        {
+          "name": "QTD",
+          "expression": "CALCULATE(SELECTEDMEASURE(), DATESQTD(Datum[Datum]))",
+          "ordinal": 3
+        },
+        {
+          "name": "VJ",
+          "expression": "CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Datum[Datum]))",
+          "ordinal": 5
+        },
+        {
+          "name": "VJ MTD",
+          "expression": [
+            "calculate(SELECTEDMEASURE(),SAMEPERIODLASTYEAR(Datum[Datum]),'Tijd verloop'[Tijd berekening] = \"MTD\")",
+            ""
+          ],
+          "ordinal": 6
+        },
+        {
+          "name": "VJ QTD",
+          "expression": [
+            "calculate(SELECTEDMEASURE(),SAMEPERIODLASTYEAR(Datum[Datum]),'Tijd verloop'[Tijd berekening] = \"QTD\")",
+            ""
+          ],
+          "ordinal": 7
+        },
+        {
+          "name": "VJ YTD",
+          "expression": "calculate(SELECTEDMEASURE(),SAMEPERIODLASTYEAR(Datum[Datum]),'Tijd verloop'[Tijd berekening] = \"YTD\")",
+          "ordinal": 8
+        },
+        {
+          "name": "JVJ",
+          "description": "Verschil ten opzichte van vorig jaar",
+          "expression": "CALCULATE(SELECTEDMEASURE())-CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Datum[Datum]))",
+          "ordinal": 9
+        },
+        {
+          "name": "JVJ%",
+          "description": "Percentage ten opzichte van vorig jaar",
+          "expression": "  (CALCULATE(SELECTEDMEASURE()) - CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Datum[Datum]))) / CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Datum[Datum]))",
+          "ordinal": 10,
+          "formatStringDefinition": {
+            "expression": "\"0.00 %\""
+          }
+        },
+        {
+          "name": "Running total",
+          "expression": "CALCULATE(SELECTEDMEASURE(),FILTER(ALL(Datum),Datum[Datum]<=MAX(Datum[Datum])))",
+          "ordinal": 11
+        },
+        {
+          "name": "Verschil tov VJ",
+          "expression": "CALCULATE(selectedmeasure()) - CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Datum[Datum]))",
+          "ordinal": 12
+        }
+      ]
+    },
+    "columns": [
+      {
+        "name": "Tijd berekening",
+        "dataType": "string",
+        "sourceColumn": "Name"
+      }
+    ],
+    "partitions": [
+      {
+        "name": "CalculationGroup 1",
+        "source": {
+          "type": "calculationGroup"
+        }
+      }
+    ]
+  }
